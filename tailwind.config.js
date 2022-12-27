@@ -5,7 +5,19 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
+        quicksand: ['Quicksand', 'sans-serif'],
+      },
+      lineHeight: {
+        minimal: '120%',
+        default: '140%',
+      },
+      letterSpacing: {
+        default: '0.005em',
+      },
+    },
   },
   plugins: [],
 };
