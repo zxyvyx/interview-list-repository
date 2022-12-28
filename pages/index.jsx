@@ -1,5 +1,6 @@
 import Head from 'next/head';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import Alert from '../components/Alert';
 import SearchBox from '../components/SearchBox';
 import ActiveUserContext from '../contexts/ActiveUserContext';
 import LoaderContext from '../contexts/LoaderContext';
@@ -9,6 +10,10 @@ export default function Home() {
   const { onLoading, setOnLoading } = useContext(LoaderContext);
   const { setSearchResult } = useContext(SearchResultContext);
   const { setSelectedUser } = useContext(ActiveUserContext);
+  const [alert, setAlert] = useState({
+    alertTitle: '',
+    alertMessage: '',
+  });
 
   const getUserLists = async (value) => {
     setOnLoading({ ...onLoading, searchUser: true });
@@ -33,20 +38,28 @@ export default function Home() {
             image: item.avatar_url,
           }));
           setSearchResult(temp);
-          console.log(temp);
+          setAlert({
+            alertTitle: '',
+            alertMessage: '',
+          });
         },
         (error) => {
-          console.log('Error: ', error);
+          setAlert({
+            alertTitle: 'Error',
+            alertMessage: error.message,
+          });
           setSearchResult([]);
         }
       )
       .catch((catchError) => {
-        console.log('Catch: ', catchError);
+        setAlert({
+          alertTitle: 'Error',
+          alertMessage: catchError.message,
+        });
         setSearchResult([]);
       })
       .finally(() => {
         setOnLoading({ ...onLoading, searchUser: false });
-        console.log('end fetch');
       });
   };
 
@@ -81,19 +94,22 @@ export default function Home() {
             repo: temp,
           };
           setSelectedUser(tempUser);
+          setAlert({
+            alertTitle: '',
+            alertMessage: '',
+          });
         },
         (error) => {
-          console.log('Error: ', error);
+          setAlert({ alertTitle: 'Error', alertMessage: error.message });
           setSearchResult(null);
         }
       )
       .catch((catchError) => {
-        console.log('Catch: ', catchError);
+        setAlert({ alertTitle: 'Error', alertMessage: catchError.message });
         setSearchResult(null);
       })
       .finally(() => {
         setOnLoading({ ...onLoading, listRepository: false });
-        console.log('end fetch');
       });
   };
 
@@ -116,6 +132,9 @@ export default function Home() {
           onSubmit={getUserLists}
           onSelectUser={getRepositoriesByUser}
         />
+        {alert.alertTitle || alert.alertMessage ? (
+          <Alert title={alert.alertTitle} message={alert.alertMessage} />
+        ) : null}
       </main>
     </>
   );
