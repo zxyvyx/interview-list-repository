@@ -16,7 +16,7 @@ export default function RightPanel({
 
   if (isLoading) {
     return (
-      <div className='flex flex-col gap-4'>
+      <div className='flex flex-col gap-4 p-3'>
         <div className='h-2 w-full animate-pulse rounded-lg bg-slate-200' />
         <div className='flex flex-col gap-2'>
           <div className='h-2 w-full animate-pulse rounded-lg bg-slate-200' />
@@ -32,8 +32,8 @@ export default function RightPanel({
   }
 
   return (
-    <div className='flex flex-col gap-4'>
-      <div className='flex flex-row items-center justify-between'>
+    <div className='relative flex flex-col gap-4 overflow-y-auto px-3'>
+      <div className='sticky top-0 -mx-3 flex flex-row items-center justify-between bg-white p-3'>
         <div className='truncate font-inter text-xl font-bold text-slate-700 md:text-2xl'>
           {activeUsername}
         </div>
