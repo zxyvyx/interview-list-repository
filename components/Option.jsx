@@ -26,7 +26,12 @@ export default function Option({ isActive, click, contentData, ...props }) {
         <div>
           {contentData?.image ? (
             <div className='relative h-7 w-7 overflow-hidden rounded-full'>
-              <Image src={contentData.image} alt={contentData.name} fill />
+              <Image
+                src={contentData.image}
+                alt={contentData.name}
+                fill
+                sizes='28px'
+              />
             </div>
           ) : (
             <div className='flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-slate-500 text-sm text-white'>
