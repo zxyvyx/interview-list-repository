@@ -10,8 +10,8 @@ export default function Option({ isActive, click, contentData, ...props }) {
   }
 
   const handleClick = () => {
-    if (click) {
-      click();
+    if (click && contentData.name) {
+      click(contentData.name, contentData.id);
     }
   };
 
@@ -25,8 +25,8 @@ export default function Option({ isActive, click, contentData, ...props }) {
       <div className='flex flex-row items-center gap-2'>
         <div>
           {contentData?.image ? (
-            <div className='h-7 w-7 overflow-hidden rounded-full'>
-              <Image src={contentData.image} alt={contentData.name} />
+            <div className='relative h-7 w-7 overflow-hidden rounded-full'>
+              <Image src={contentData.image} alt={contentData.name} fill />
             </div>
           ) : (
             <div className='flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-slate-500 text-sm text-white'>

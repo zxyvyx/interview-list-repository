@@ -8,8 +8,8 @@ import ActiveUserContext from '../../contexts/ActiveUserContext';
 import LeftPanel from './LeftPanel';
 import RightPanel from './RightPanel';
 
-export default function SearchBox({ onSubmit }) {
-  const { selectedUser } = useContext(ActiveUserContext);
+export default function SearchBox({ onSubmit, onSelectUser }) {
+  const { selectedUser, setSelectedUser } = useContext(ActiveUserContext);
   const { searchResult } = useContext(SearchResultContext);
   const { onLoading } = useContext(LoaderContext);
   const [isResultOpen, setIsResultOpen] = useState(false);
@@ -24,12 +24,25 @@ export default function SearchBox({ onSubmit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsInteract(true);
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
 
     if (onSubmit) {
       onSubmit(data);
     }
+  };
+
+  const handleSelectUser = (username, id) => {
+    if (onSelectUser) {
+      onSelectUser(username, id);
+    }
+    setIsResultOpen(true);
+  };
+
+  const handleCloseRightPanel = () => {
+    setIsResultOpen(false);
+    setSelectedUser(null);
   };
 
   return (
@@ -53,7 +66,7 @@ export default function SearchBox({ onSubmit }) {
             <LeftPanel
               searchResults={searchResult}
               isLoading={onLoading?.searchUser}
-              click={() => setIsResultOpen(true)}
+              click={handleSelectUser}
               activeOption={selectedUser?.id}
             />
           </div>
@@ -63,7 +76,7 @@ export default function SearchBox({ onSubmit }) {
               activeUsername={selectedUser?.name}
               listRepositories={selectedUser?.repo}
               isLoading={onLoading?.listRepository}
-              onClose={() => setIsResultOpen(false)}
+              onClose={handleCloseRightPanel}
             />
           ) : null}
         </div>
