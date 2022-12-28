@@ -7,7 +7,28 @@ export default function LeftPanel({
   activeOption,
 }) {
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className='flex flex-col gap-4 p-3'>
+        <div className='flex flex-row items-center gap-2'>
+          <div>
+            <div className='h-6 w-6 animate-pulse rounded-full bg-slate-200' />
+          </div>
+          <div className='h-2 w-full animate-pulse rounded-lg bg-slate-200' />
+        </div>
+        <div className='flex flex-row items-center gap-2'>
+          <div>
+            <div className='h-6 w-6 animate-pulse rounded-full bg-slate-200' />
+          </div>
+          <div className='h-2 w-full animate-pulse rounded-lg bg-slate-200' />
+        </div>
+        <div className='flex flex-row items-center gap-2'>
+          <div>
+            <div className='h-6 w-6 animate-pulse rounded-full bg-slate-200' />
+          </div>
+          <div className='h-2 w-full animate-pulse rounded-lg bg-slate-200' />
+        </div>
+      </div>
+    );
   }
 
   return (
