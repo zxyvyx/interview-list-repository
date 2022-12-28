@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import TextField from '../TextField';
 import searchIcon from '../../assets/search-icon.svg';
 import SearchResultContext from '../../contexts/SearchResultContext';
@@ -14,6 +14,7 @@ export default function SearchBox({ onSubmit, onSelectUser }) {
   const { onLoading } = useContext(LoaderContext);
   const [isResultOpen, setIsResultOpen] = useState(false);
   const [isInteract, setIsInteract] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   let leftSideStyle = 'overflow-y-auto py-4 pl-0';
   if (isResultOpen) {
@@ -22,11 +23,32 @@ export default function SearchBox({ onSubmit, onSelectUser }) {
     leftSideStyle = `${leftSideStyle} col-span-1 sm:col-span-2 flex flex-col gap-1 pr-0`;
   }
 
+  // create useEffect to check if the screen is mobile or not
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 640) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsInteract(true);
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
+
+    if (isMobile) {
+      setIsResultOpen(false);
+      setSelectedUser(null);
+    }
 
     if (onSubmit) {
       onSubmit(data);
